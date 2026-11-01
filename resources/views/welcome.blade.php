@@ -59,10 +59,25 @@
         <p>I am a university student learning web development.</p>
     </section>
 
-    <section class="card" id="courses">
-        <h2>My Courses</h2>
-        <p>Web Development | Programming | Database</p>
-    </section>
+
+<section class="card" id="courses">
+    <h2>My Courses</h2>
+
+    <form action="/courses" method="POST">
+        @csrf
+
+        <input type="text" name="name"
+               placeholder="Course name" required>
+
+        <button type="submit">Add Course</button>
+    </form>
+
+    <h3>Courses List</h3>
+
+    @foreach($courses as $course)
+        <p>{{ $course->name }}</p>
+    @endforeach
+</section>
 
     <section class="card" id="skills">
         <h2>My Skills</h2>
