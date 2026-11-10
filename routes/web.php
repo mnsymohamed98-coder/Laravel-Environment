@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
     $courses = DB::table('courses')->get();
 
-    return view('welcome', [
-        'courses' => $courses
-    ]);
+    return view('welcome', compact('courses'));
 });
 
 Route::post('/courses', function (Request $request) {
@@ -23,6 +21,44 @@ Route::post('/courses', function (Request $request) {
         'created_at' => now(),
         'updated_at' => now()
     ]);
+
+    return redirect('/');
+});
+
+Route::post('/courses/delete/{id}', function ($id) {
+    DB::table('courses')
+        ->where('id', $id)
+        ->delete();
+
+    return redirect('/');
+});
+
+Route::get('/courses/edit/{id}', function ($id) {
+    $editingCourse = DB::table('courses')
+        ->where('id', $id)
+        ->first();
+
+    if (!$editingCourse) {
+        abort(404);
+    }
+
+    $courses = DB::table('courses')->get();
+
+    return view('welcome', compact('courses', 'editingCourse'));
+});
+
+Route::post('/courses/update', function (Request $request) {
+    $request->validate([
+        'id' => 'required|integer|exists:courses,id',
+        'name' => 'required|string|max:100'
+    ]);
+
+    DB::table('courses')
+        ->where('id', $request->input('id'))
+        ->update([
+            'name' => $request->input('name'),
+            'updated_at' => now()
+        ]);
 
     return redirect('/');
 });
