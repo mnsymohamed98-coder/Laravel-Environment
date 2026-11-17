@@ -1,6 +1,6 @@
 
 <?php
-
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -62,3 +62,13 @@ Route::post('/courses/update', function (Request $request) {
 
     return redirect('/');
 });
+
+Route::get('/users', [UserController::class, 'index']);
+
+Route::post('/users', [UserController::class, 'store']);
+
+Route::get('/users/edit/{id}', [UserController::class, 'edit']);
+
+Route::post('/users/update/{id}', [UserController::class, 'update']);
+
+Route::post('/users/delete/{id}', [UserController::class, 'destroy']);
